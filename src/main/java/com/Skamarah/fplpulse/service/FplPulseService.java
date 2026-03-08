@@ -1,6 +1,7 @@
 package com.Skamarah.fplpulse.service;
 
 import com.Skamarah.fplpulse.config.WebClientConfig;
+import com.Skamarah.fplpulse.dto.LiveGameweekResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
@@ -11,11 +12,11 @@ public class FplPulseService {
     @Autowired
     private WebClientConfig webClientConfig;
 
-    public Mono<String> getLiveGameweekData(int gameweek) {
+    public Mono<LiveGameweekResponseDto> getLiveGameweekData(int gameweek) {
         return webClientConfig.fplWebClient().get()
                 .uri("/event/" + gameweek + "/live/")
                 .retrieve()
-                .bodyToMono(String.class);
+                .bodyToMono(LiveGameweekResponseDto.class);
     }
 
     public Mono<JsonNode> getBootstrapStatic() {

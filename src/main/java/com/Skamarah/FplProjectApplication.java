@@ -1,5 +1,6 @@
 package com.Skamarah;
 
+import com.Skamarah.fplpulse.dto.PlayerStatsDto;
 import com.Skamarah.fplpulse.service.FplPulseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -22,8 +23,14 @@ public class FplProjectApplication {
 	public CommandLineRunner run() {
 		return args -> {
 			fplPulseService.getLiveGameweekData(27)
-					.subscribe(System.out::println);
+					.subscribe(liveGameweekResponseDto -> liveGameweekResponseDto.getGameweekResponse()
+							.forEach(playerLiveDataDto -> {
+								System.out.println("Player ID: " + playerLiveDataDto.getId());
+								System.out.println("Points: " + playerLiveDataDto.getStats().getTotalPoints());
+								System.out.println("Goals: " + playerLiveDataDto.getStats().getGoals());
+								System.out.println("Assists: " + playerLiveDataDto.getStats().getAssists());
+								System.out.println("---");
+							}));
 		};
 	}
-
 }
